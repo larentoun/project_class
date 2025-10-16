@@ -32,6 +32,12 @@ function QrScanner() {
     alert(`Ошибка доступа к камере: ${errorMessage}`);
   };
 
+  const cameraConstraints: MediaTrackConstraints = {
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+    facingMode: 'environment',
+  };
+
   return (
     <div className="qr-scanner-container">
       <h2 className="qr-scanner-title">QR-код сканнер</h2>
@@ -40,6 +46,7 @@ function QrScanner() {
           onScan={handleScan}
           onError={handleError}
           styles={{ container: { width: '100%' } }}
+          constraints={cameraConstraints}
         />
       </div>
       {result && (
