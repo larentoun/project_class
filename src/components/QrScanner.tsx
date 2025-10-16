@@ -19,7 +19,7 @@ function QrScanner() {
       try {
         const constraints: MediaStreamConstraints = {
           video: {
-            facingMode: 'environment',
+            facingMode: 'user',
             width: { ideal: 1280 },
             height: { ideal: 720 },
             advanced: [{ 
