@@ -39,7 +39,7 @@ function QrScanner() {
 
   return (
     <div className="qr-scanner-container">
-      <h2 className="qr-scanner-title">QR-код сканнер 800</h2>
+      <h2 className="qr-scanner-title">QR-код сканнер ass</h2>
       <div className="qr-scanner-wrapper">
         <Scanner
           onScan={handleScan}
