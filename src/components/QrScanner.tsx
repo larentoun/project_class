@@ -33,14 +33,14 @@ function QrScanner() {
   };
 
   const cameraConstraints: MediaTrackConstraints = {
-    width: { ideal: 1920 },
-    height: { ideal: 1080 },
+    width: { ideal: 800 },
+    height: { ideal: 600 },
     facingMode: 'environment',
   };
 
   return (
     <div className="qr-scanner-container">
-      <h2 className="qr-scanner-title">QR-код сканнер 1920</h2>
+      <h2 className="qr-scanner-title">QR-код сканнер 800</h2>
       <div className="qr-scanner-wrapper">
         <Scanner
           onScan={handleScan}
