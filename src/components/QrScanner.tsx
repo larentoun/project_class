@@ -35,8 +35,10 @@ function QrScanner() {
   const cameraConstraints: MediaTrackConstraints = {
     facingMode: 'environment',
     aspectRatio: {exact: 4 / 3},
-    width: { ideal: 1280 },
-    height: { ideal: 720 },
+    advanced: [
+      //@ts-expect-error should not be supported but lets see
+      { zoom: 3 },
+    ]
   };
 
   return (
