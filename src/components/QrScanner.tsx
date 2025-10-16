@@ -19,12 +19,9 @@ function QrScanner() {
       try {
         const constraints: MediaStreamConstraints = {
           video: {
-            facingMode: 'user',
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            advanced: [{ 
-              //@ts-expect-error low support
-              focusMode: 'continuous' }]
+            facingMode: 'environment',
+            width: { ideal: 640 },
+            height: { ideal: 480 },
           }
         };
 
@@ -99,7 +96,7 @@ function QrScanner() {
 
   return (
     <div className="qr-scanner-container">
-      <h2 className="qr-scanner-title">QR-код сканнер jsqr2</h2>
+      <h2 className="qr-scanner-title">QR-код сканнер jsqr3</h2>
       <div className="qr-scanner-wrapper">
         <video
           ref={videoRef}
