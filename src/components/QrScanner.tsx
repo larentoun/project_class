@@ -36,14 +36,17 @@ function QrScanner() {
     facingMode: 'environment',
     aspectRatio: {exact: 4 / 3},
     advanced: [
-      //@ts-expect-error should not be supported but lets see
-      { zoom: 3 },
+      {
+        //@ts-expect-error should not be supported but lets see
+        zoom: 1,
+        focusMode: 'continuous'
+      },
     ]
   };
 
   return (
     <div className="qr-scanner-container">
-      <h2 className="qr-scanner-title">QR-код сканнер 2</h2>
+      <h2 className="qr-scanner-title">QR-код сканнер 3</h2>
       <div className="qr-scanner-wrapper">
         <Scanner
           onScan={handleScan}
