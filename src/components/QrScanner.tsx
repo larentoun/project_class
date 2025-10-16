@@ -7,6 +7,7 @@ function QrScanner() {
   const navigate = useNavigate();
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment'); // Начинаем с environment
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,12 +17,17 @@ function QrScanner() {
     let animationFrameId: number;
 
     const startCamera = async () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+
+      setError(null);
+      setResult(null);
+
       try {
         const constraints: MediaStreamConstraints = {
           video: {
-            facingMode: 'environment',
-            width: { ideal: 640 },
-            height: { ideal: 480 },
+            facingMode: facingMode,
           }
         };
 
@@ -32,38 +38,37 @@ function QrScanner() {
           videoRef.current.setAttribute('playsinline', 'true');
           await videoRef.current.play();
 
+          const scanFrame = () => {
+            if (videoRef.current && canvasRef.current) {
+              const canvas = canvasRef.current;
+              const video = videoRef.current;
+
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+
+              const context = canvas.getContext('2d');
+              if (context) {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                
+                const code: QRCode | null = jsQR(imageData.data, imageData.width, imageData.height);
+
+                if (code) {
+                  console.log('QR-код распознан:', code.data);
+                  setResult(code.data);
+                  // cancelAnimationFrame(animationFrameId);
+                  // stream?.getTracks().forEach(track => track.stop());
+                }
+              }
+              animationFrameId = requestAnimationFrame(scanFrame);
+            }
+          };
           scanFrame();
         }
       } catch (err) {
         console.error('Ошибка доступа к камере:', err);
         setError(`Ошибка доступа к камере: ${(err as Error).message || 'Неизвестная ошибка'}`);
-      }
-    };
-
-    const scanFrame = () => {
-      if (videoRef.current && canvasRef.current) {
-        const canvas = canvasRef.current;
-        const video = videoRef.current;
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        const context = canvas.getContext('2d');
-        if (context) {
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-          const code: QRCode | null = jsQR(imageData.data, imageData.width, imageData.height);
-
-          if (code) {
-            console.log('QR-код распознан:', code.data);
-            setResult(code.data);
-            cancelAnimationFrame(animationFrameId);
-            stream?.getTracks().forEach(track => track.stop());
-          }
-        }
-        animationFrameId = requestAnimationFrame(scanFrame);
       }
     };
 
@@ -75,7 +80,11 @@ function QrScanner() {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, []);
+  }, [facingMode]);
+
+  const toggleCamera = () => {
+    setFacingMode(prev => prev === 'environment' ? 'user' : 'environment');
+  };
 
   if (error) {
     return (
@@ -83,9 +92,7 @@ function QrScanner() {
         <h2 className="qr-scanner-title">QR-код сканнер</h2>
         <div className="qr-scanner-error">
           <p>{error}</p>
-          <button onClick={() => window.location.reload()} className="qr-scanner-retry-button">
-            Повторить
-          </button>
+          <button onClick={() => setFacingMode(facingMode)} className="qr-scanner-retry-button">Повторить с {facingMode === 'environment' ? 'передней' : 'задней'} камерой</button>
         </div>
         <button onClick={() => navigate(-1)} className="qr-scanner-back-button">
           Назад
@@ -96,7 +103,7 @@ function QrScanner() {
 
   return (
     <div className="qr-scanner-container">
-      <h2 className="qr-scanner-title">QR-код сканнер jsqr3</h2>
+      <h2 className="qr-scanner-title">QR-код сканнер</h2>
       <div className="qr-scanner-wrapper">
         <video
           ref={videoRef}
@@ -111,6 +118,9 @@ function QrScanner() {
           <p><strong>Распознанный QR-код:</strong> {result}</p>
         </div>
       )}
+      <button onClick={toggleCamera} className="qr-scanner-toggle-button">
+        Переключить на {facingMode === 'environment' ? 'переднюю' : 'заднюю'} камеру
+      </button>
       <button onClick={() => navigate(-1)} className="qr-scanner-back-button">
         Назад
       </button>
