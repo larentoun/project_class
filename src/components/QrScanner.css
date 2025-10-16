@@ -1,0 +1,33 @@
+.qr-scanner-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.qr-scanner-title {
+    margin-bottom: 20px;
+}
+
+.qr-scanner-placeholder {
+    width: 100%;
+    height: 300px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.qr-scanner-back-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: white;
+    background-color: #6c757d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.qr-scanner-back-button:hover {
+    background-color: #5a6268;
+}

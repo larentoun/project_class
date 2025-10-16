@@ -1,0 +1,23 @@
+.qr-list-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.qr-list-title {
+    margin-bottom: 20px;
+}
+
+.qr-list-back-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: white;
+    background-color: #6c757d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.qr-list-back-button:hover {
+    background-color: #5a6268;
+}
