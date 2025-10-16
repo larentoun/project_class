@@ -33,9 +33,8 @@ function QrScanner() {
   };
 
   const cameraConstraints: MediaTrackConstraints = {
-    width: { ideal: 800 },
-    height: { ideal: 600 },
     facingMode: 'environment',
+    aspectRatio: {exact: 1.7777777778}
   };
 
   return (
