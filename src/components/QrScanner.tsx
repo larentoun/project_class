@@ -7,7 +7,7 @@ function QrScanner() {
   const navigate = useNavigate();
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment'); // Начинаем с environment
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,9 +56,21 @@ function QrScanner() {
 
                 if (code) {
                   console.log('QR-код распознан:', code.data);
-                  setResult(code.data);
-                  // cancelAnimationFrame(animationFrameId);
-                  // stream?.getTracks().forEach(track => track.stop());
+                  const scannedData = code.data;
+
+                  // Check if URL is correct
+                  try {
+                    new URL(scannedData);
+
+                    setResult(scannedData);
+                    window.location.href = scannedData;
+                    
+                    cancelAnimationFrame(animationFrameId);
+                    stream?.getTracks().forEach(track => track.stop());
+                    return;
+                  } catch {
+                    console.warn('Распознанный код не является корректным URL:', scannedData);
+                  }
                 }
               }
               animationFrameId = requestAnimationFrame(scanFrame);
@@ -113,9 +125,9 @@ function QrScanner() {
         />
         <canvas ref={canvasRef} style={{ display: 'none' }} />
       </div>
-      {result && (
+      {result && !error && (
         <div className="qr-scanner-result">
-          <p><strong>Распознанный QR-код:</strong> {result}</p>
+          <p><strong>Распознанный QR-код (перенаправление...):</strong> {result}</p>
         </div>
       )}
       <button onClick={toggleCamera} className="qr-scanner-toggle-button">
