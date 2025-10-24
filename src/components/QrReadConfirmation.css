@@ -1,27 +1,20 @@
-.qr-list-container {
+.confirmation-container {
     padding: 20px;
     text-align: center;
-}
-
-.qr-list-title {
-    margin-bottom: 20px;
-}
-
-.qr-code-container {
-    margin: 20px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
-.qr-code-container p {
-    margin-top: 10px;
-    font-style: italic;
-    color: #6c757d;
+.confirmation-title {
+    color: #28a745;
+    margin-bottom: 20px;
 }
 
-.qr-list-back-button {
+.confirmation-back-button {
     padding: 10px 15px;
     font-size: 14px;
     color: white;
@@ -29,9 +22,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
 }
 
-.qr-list-back-button:hover {
+.confirmation-back-button:hover {
     background-color: #5a6268;
 }
